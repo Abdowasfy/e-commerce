@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   bool isPasswordHidden = true;
+ 
 
   @override
   void initState() {
