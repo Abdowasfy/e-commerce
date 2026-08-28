@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:e_commerce/networking/api_endpoints.dart';
+import 'package:e_commerce/core/networking/api_endpoints.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioHelper {
   static Dio? dio;
 
-  static initDio() {
+  static void initDio() {
     dio ??= Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
@@ -39,7 +39,7 @@ class DioHelper {
 
       return response;
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
   }
 }

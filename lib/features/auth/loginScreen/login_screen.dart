@@ -1,8 +1,15 @@
+import 'dart:developer';
+
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:dartz/dartz.dart' as either;
 import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_colors.dart';
 import 'package:e_commerce/core/styling/app_styles.dart';
+import 'package:e_commerce/core/utils/animated_snack_dialog.dart';
 import 'package:e_commerce/core/widgets/custom_text_field.dart';
 import 'package:e_commerce/core/widgets/primary_button_widget.dart';
+import 'package:e_commerce/features/auth/models/login_response_model.dart';
+import 'package:e_commerce/features/auth/repo/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,10 +28,30 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   bool isPasswordHidden = true;
- 
 
   @override
   void initState() {
+    AuthRepo().login("john@mail.com", "changeme").then((
+      either.Either<String, LoginResponseModel> res,
+    ) {
+      res.fold(
+        (error) {
+          showAnimatedSnackBarDialog(
+            context: context,
+            message: error,
+            type: AnimatedSnackBarType.error,
+          );
+        },
+        (right) {
+          showAnimatedSnackBarDialog(
+            context: context,
+            message: "Login Successful",
+            type: AnimatedSnackBarType.success,
+          );
+        },
+      );
+      setState(() {});
+    });
     emailController = TextEditingController();
     passwordController = TextEditingController();
     super.initState();
@@ -32,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -114,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (formKey.currentState!.validate()) {
                       print(emailController.text);
                       print(passwordController.text);
-                       GoRouter.of(context).push(AppRoutes.mainscreen);
+                      GoRouter.of(context).push(AppRoutes.mainscreen);
                     }
                   },
                 ),

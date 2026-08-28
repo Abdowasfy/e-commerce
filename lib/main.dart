@@ -1,9 +1,12 @@
 import 'package:e_commerce/core/routing/router_generation.dart';
 import 'package:e_commerce/core/styling/theme_data.dart';
+import 'package:e_commerce/core/networking/api_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DioHelper.initDio();
   runApp(const MyApp());
 }
 
