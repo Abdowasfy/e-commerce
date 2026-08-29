@@ -1,11 +1,14 @@
 import 'package:e_commerce/core/routing/app_routes.dart';
+import 'package:e_commerce/core/utils/service_locator.dart';
 import 'package:e_commerce/features/account/account_screen.dart';
 import 'package:e_commerce/features/address/address_screen.dart';
+import 'package:e_commerce/features/auth/cubit/cubit/auth_cubit.dart';
 import 'package:e_commerce/features/auth/loginScreen/login_screen.dart';
 import 'package:e_commerce/features/auth/registerScreen/register_screen.dart';
 import 'package:e_commerce/features/cart/cart_screen.dart';
 import 'package:e_commerce/features/main_screen/main_screen.dart';
 import 'package:e_commerce/features/product_screen/product_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RouterGeneration {
@@ -15,7 +18,10 @@ class RouterGeneration {
       GoRoute(
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<AuthCubit>(),
+          child: const LoginScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.registerScreen,

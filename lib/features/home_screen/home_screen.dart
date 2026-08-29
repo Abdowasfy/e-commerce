@@ -2,15 +2,33 @@ import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_colors.dart';
 import 'package:e_commerce/core/styling/app_styles.dart';
 import 'package:e_commerce/core/widgets/custom_text_field.dart';
+import 'package:e_commerce/core/widgets/loading_widget.dart';
+import 'package:e_commerce/features/home_screen/cubit/categories_cubit.dart';
+import 'package:e_commerce/features/home_screen/cubit/categories_state.dart';
+import 'package:e_commerce/features/home_screen/cubit/product_cubit.dart';
+import 'package:e_commerce/features/home_screen/cubit/product_state.dart';
+import 'package:e_commerce/features/home_screen/models/products_model.dart';
 import 'package:e_commerce/features/home_screen/widgets/category_item_widget.dart';
 import 'package:e_commerce/features/home_screen/widgets/product_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  void initState() {
+    super.initState();
+    context.read<ProductCubit>().fetchProducts();
+    context.read<CategoriesCubit>().fetchCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,45 +60,56 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           const Gap(16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                CategoryItemWidget(categoryName: "All"),
-                const Gap(8),
-                CategoryItemWidget(categoryName: "Tshirts"),
-                const Gap(8),
-                CategoryItemWidget(categoryName: "Jeans"),
-                const Gap(8),
-                CategoryItemWidget(categoryName: "Shoes"),
-                const Gap(8),
-                CategoryItemWidget(categoryName: "Tshirts"),
-                const Gap(8),
-                CategoryItemWidget(categoryName: "Jeans"),
-                const Gap(8),
-              ],
-            ),
+          BlocBuilder<CategoriesCubit, CategoriesState>(
+            builder: (context, state) {
+              if (state is CategoriesLoaded) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: state.categories.map((cat) {
+                      return CategoryItemWidget(categoryName: cat.name ?? "");
+                    }).toList(),
+                  ),
+                );
+              }
+              return SizedBox.shrink();
+            },
           ),
           const Gap(16),
-          Expanded(
-            child: GridView(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 16.0,
-                childAspectRatio: 0.7,
-              ),
-              children: [
-                ProductItemWidget(title: "Shoes", price: "\$1,190",onTap: () {
-                  GoRouter.of(context).push(AppRoutes.productScreen);
-                },),
-                ProductItemWidget(title: "Shoes", price: "\$1,190"),
-                ProductItemWidget(title: "Shoes", price: "\$1,190"),
-                ProductItemWidget(title: "Shoes", price: "\$1,190"),
-                ProductItemWidget(title: "Shoes", price: "\$1,190"),
-                ProductItemWidget(title: "Shoes", price: "\$1,190"),
-              ],
-            ),
+          BlocBuilder<ProductCubit, ProductState>(
+            builder: (context, state) {
+              if (state is ProductLoading) {
+                return LoadingWidget(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                );
+              }
+              if (state is ProductLoaded) {
+                List<ProductsModel> products = state.products;
+                return Expanded(
+                  child: GridView(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8.0,
+                          crossAxisSpacing: 16.0,
+                          childAspectRatio: 0.7,
+                        ),
+                    children: products.map((product) {
+                      return ProductItemWidget(
+                        image: product.images.first,
+                        title: product.title ?? "",
+                        price: product.price.toString(),
+                        onTap: () {
+                          GoRouter.of(context).push(AppRoutes.productScreen);
+                        },
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+              return Text("this is an error");
+            },
           ),
         ],
       ),
