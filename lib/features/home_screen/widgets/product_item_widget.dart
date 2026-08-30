@@ -8,6 +8,7 @@ class ProductItemWidget extends StatelessWidget {
   final String title;
   final String price;
   final String image;
+  final int id;
   final Function()? onTap;
   const ProductItemWidget({
     super.key,
@@ -15,6 +16,7 @@ class ProductItemWidget extends StatelessWidget {
     required this.price,
     this.onTap,
     required this.image,
+    required this.id,
   });
 
   @override
@@ -27,11 +29,14 @@ class ProductItemWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: CachedNetworkImage(
-                width: 160.w,
-                height: 150.w,
-                imageUrl: image,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: "product$id",
+                child: CachedNetworkImage(
+                  width: 160.w,
+                  height: 150.w,
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const Gap(8),

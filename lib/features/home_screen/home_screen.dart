@@ -13,6 +13,7 @@ import 'package:e_commerce/features/home_screen/widgets/product_item_widget.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             selectedCategory = cat.name ?? "";
                           });
                           context.read<ProductCubit>().fetchProductsByCategory(
-                           cat.id as int,
+                            cat.id as int,
                           );
                         },
                       );
@@ -110,24 +111,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {});
                       context.read<ProductCubit>().fetchProducts();
                     },
-                    child: GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8.0,
-                            crossAxisSpacing: 16.0,
-                            childAspectRatio: 0.7,
-                          ),
-                      children: products.map((product) {
-                        return ProductItemWidget(
-                          image: product.images.first,
-                          title: product.title,
-                          price: product.price.toString(),
-                          onTap: () {
-                            GoRouter.of(context).push(AppRoutes.productScreen,extra: product);
-                          },
-                        );
-                      }).toList(),
+                    child: AnimationLimiter(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 8.0,
+                              crossAxisSpacing: 16.0,
+                              childAspectRatio: 0.7,
+                            ),
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 600),
+                            child: SlideAnimation(
+                              verticalOffset: 250.0,
+                              child: FadeInAnimation(
+                                child: ProductItemWidget(
+                                  id: products[index].id ?? 0,
+                                  image: products[index].images.first,
+                                  title: products[index].title ?? "",
+                                  price: products[index].price.toString(),
+                                  onTap: () {
+                                    GoRouter.of(context).push(
+                                      AppRoutes.productScreen,
+                                      extra: products[index],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );

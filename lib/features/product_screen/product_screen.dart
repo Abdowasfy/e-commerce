@@ -30,9 +30,12 @@ class ProductScreen extends StatelessWidget {
                   Container(
                     height: 341.h,
                     width: 341.w,
-                    child: CachedNetworkImage(
-                      imageUrl: product.images.first,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                       tag: "product${product.id}",
+                      child: CachedNetworkImage(
+                        imageUrl: product.images.first,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const Gap(12),
