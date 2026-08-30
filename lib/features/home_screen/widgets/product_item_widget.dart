@@ -13,7 +13,8 @@ class ProductItemWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.price,
-    this.onTap, required this.image,
+    this.onTap,
+    required this.image,
   });
 
   @override
@@ -26,7 +27,9 @@ class ProductItemWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: CachedNetworkImage(width: 160.w, height: 150.w, 
+              child: CachedNetworkImage(
+                width: 160.w,
+                height: 150.w,
                 imageUrl: image,
                 fit: BoxFit.cover,
               ),
@@ -40,7 +43,7 @@ class ProductItemWidget extends StatelessWidget {
               ),
             ),
             const Gap(3),
-            Text(price, style: AppStyles.grey12wMediumStyle),
+            Text("\$$price", style: AppStyles.grey12wMediumStyle),
           ],
         ),
       ),

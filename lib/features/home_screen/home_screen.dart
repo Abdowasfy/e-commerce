@@ -24,6 +24,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String selectedCategory = "";
+
+  @override
   void initState() {
     super.initState();
     context.read<ProductCubit>().fetchProducts();
@@ -67,7 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: state.categories.map((cat) {
-                      return CategoryItemWidget(categoryName: cat.name ?? "");
+                      return CategoryItemWidget(
+                        categoryName: cat.name ?? "",
+                        isSelected: selectedCategory == cat.name ? true : false,
+                        onpress: () {
+                          setState(() {
+                            selectedCategory = cat.name ?? "";
+                          });
+                          context.read<ProductCubit>().fetchProductsByCategory(
+                           cat.id as int,
+                          );
+                        },
+                      );
                     }).toList(),
                   ),
                 );
@@ -87,24 +101,34 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state is ProductLoaded) {
                 List<ProductsModel> products = state.products;
                 return Expanded(
-                  child: GridView(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 8.0,
-                          crossAxisSpacing: 16.0,
-                          childAspectRatio: 0.7,
-                        ),
-                    children: products.map((product) {
-                      return ProductItemWidget(
-                        image: product.images.first,
-                        title: product.title ?? "",
-                        price: product.price.toString(),
-                        onTap: () {
-                          GoRouter.of(context).push(AppRoutes.productScreen);
-                        },
-                      );
-                    }).toList(),
+                  child: RefreshIndicator(
+                    color: AppColors.primaryColor,
+                    backgroundColor: AppColors.whiteColor,
+                    //displacement: 100,
+                    onRefresh: () async {
+                      selectedCategory = "";
+                      setState(() {});
+                      context.read<ProductCubit>().fetchProducts();
+                    },
+                    child: GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 8.0,
+                            crossAxisSpacing: 16.0,
+                            childAspectRatio: 0.7,
+                          ),
+                      children: products.map((product) {
+                        return ProductItemWidget(
+                          image: product.images.first,
+                          title: product.title,
+                          price: product.price.toString(),
+                          onTap: () {
+                            GoRouter.of(context).push(AppRoutes.productScreen,extra: product);
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ),
                 );
               }

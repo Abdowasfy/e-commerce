@@ -56,19 +56,19 @@ class _HomeScreenState extends State<MainScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined, size: 24.sp),
-            activeIcon: Icon(Icons.home_outlined, size: 24.sp),
+            activeIcon: Icon(Icons.home, size: 24.sp),
             label: "Home",
           ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart_outlined, size: 24.sp),
-            activeIcon: Icon(Icons.shopping_cart_outlined, size: 24.sp),
+            activeIcon: Icon(Icons.shopping_cart, size: 24.sp),
             label: "Cart",
           ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_outlined, size: 24.sp),
-            activeIcon: Icon(Icons.account_circle_outlined, size: 24.sp),
+            activeIcon: Icon(Icons.account_circle, size: 24.sp),
             label: "Account",
           ),
         ],

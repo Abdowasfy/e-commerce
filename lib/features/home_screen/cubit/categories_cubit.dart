@@ -12,7 +12,8 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   Future<void> fetchCategories() async {
     emit(CategoriesLoading());
 
-    final Either<String, List<CategoriesModel>> res =await _homeRepo.getCategories();
+    final Either<String, List<CategoriesModel>> res = await _homeRepo
+        .getCategories();
 
     res.fold(
       (error) {

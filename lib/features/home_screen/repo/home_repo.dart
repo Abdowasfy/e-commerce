@@ -38,16 +38,15 @@ class HomeRepo {
       );
 
       if (response.statusCode == 200) {
-        final categories = (response.data as List)
-            .map((category) => CategoriesModel.fromJson(category))
-            .toList();
+        final categories = (response.data as List).map((category) => CategoriesModel.fromJson(category)).toList();
+        
 
         return Right(categories);
       } else {
         return Left('Something went wrong');
       }
     } catch (e) {
-        return Left(e.toString());
+      return Left(e.toString());
     }
   }
 
