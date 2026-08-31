@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/core/styling/app_styles.dart' show AppStyles;
 import 'package:e_commerce/core/widgets/primary_button_widget.dart';
+import 'package:e_commerce/features/cart/cubit/cart_cubit.dart';
 import 'package:e_commerce/features/home_screen/models/products_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
@@ -31,7 +33,7 @@ class ProductScreen extends StatelessWidget {
                     height: 341.h,
                     width: 341.w,
                     child: Hero(
-                       tag: "product${product.id}",
+                      tag: "product${product.id}",
                       child: CachedNetworkImage(
                         imageUrl: product.images.first,
                         fit: BoxFit.cover,
@@ -135,7 +137,15 @@ class ProductScreen extends StatelessWidget {
                           color: Colors.white,
                           size: 18.sp,
                         ),
-                        onPress: () {},
+
+                        onPress: () {
+                          context.read<CartCubit>().addToCart(product);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Added to cart")),
+                          );
+                        },
+
                         buttonText: "Add to Cart",
                         width: 240.w,
                       ),

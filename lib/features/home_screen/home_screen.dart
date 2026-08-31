@@ -2,7 +2,6 @@ import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_colors.dart';
 import 'package:e_commerce/core/styling/app_styles.dart';
 import 'package:e_commerce/core/widgets/custom_text_field.dart';
-import 'package:e_commerce/core/widgets/loading_widget.dart';
 import 'package:e_commerce/features/home_screen/cubit/categories_cubit.dart';
 import 'package:e_commerce/features/home_screen/cubit/categories_state.dart';
 import 'package:e_commerce/features/home_screen/cubit/product_cubit.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,9 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
           SizedBox(
             width: 335.w,
-            child: Text("Discover", style: AppStyles.black18boldStyle),
+            child: Text("Nexora", style: AppStyles.black18boldStyle),
           ),
-          Gap(16),
+
+          const Gap(16),
+
           Row(
             children: [
               CustomTextField(width: 281.w, hintText: "Search for clothes..."),
@@ -63,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+
           const Gap(16),
+
           BlocBuilder<CategoriesCubit, CategoriesState>(
             builder: (context, state) {
               if (state is CategoriesLoaded) {
@@ -73,11 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: state.categories.map((cat) {
                       return CategoryItemWidget(
                         categoryName: cat.name ?? "",
-                        isSelected: selectedCategory == cat.name ? true : false,
+                        isSelected: selectedCategory == cat.name,
                         onpress: () {
                           setState(() {
                             selectedCategory = cat.name ?? "";
                           });
+
                           context.read<ProductCubit>().fetchProductsByCategory(
                             cat.id as int,
                           );
@@ -87,25 +92,81 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }
-              return SizedBox.shrink();
+
+              return const SizedBox.shrink();
             },
           ),
+
           const Gap(16),
+
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               if (state is ProductLoading) {
-                return LoadingWidget(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.6,
+                return Expanded(
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: GridView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 8.0,
+                            crossAxisSpacing: 16.0,
+                            childAspectRatio: 0.7,
+                          ),
+                      itemCount: 6,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                              ),
+                            ),
+
+                            const Gap(8),
+
+                            Container(
+                              width: double.infinity,
+                              height: 18.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+                            ),
+
+                            const Gap(6),
+
+                            Container(
+                              width: 70.w,
+                              height: 16.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
                 );
               }
+
               if (state is ProductLoaded) {
                 List<ProductsModel> products = state.products;
+
                 return Expanded(
                   child: RefreshIndicator(
                     color: AppColors.primaryColor,
                     backgroundColor: AppColors.whiteColor,
-                    //displacement: 100,
                     onRefresh: () async {
                       selectedCategory = "";
                       setState(() {});
@@ -129,9 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               verticalOffset: 250.0,
                               child: FadeInAnimation(
                                 child: ProductItemWidget(
-                                  id: products[index].id ?? 0,
+                                  id: products[index].id,
                                   image: products[index].images.first,
-                                  title: products[index].title ?? "",
+                                  title: products[index].title,
                                   price: products[index].price.toString(),
                                   onTap: () {
                                     GoRouter.of(context).push(
@@ -149,7 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }
-              return Text("this is an error");
+
+              return const Text("this is an error");
             },
           ),
         ],

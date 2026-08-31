@@ -6,12 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   setupServiceLocator();
-  runApp(const MyApp());
+
+  runApp(const EcommerceApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class EcommerceApp extends StatelessWidget {
+  const EcommerceApp({super.key});
 
   @override
   Widget build(BuildContext context) {

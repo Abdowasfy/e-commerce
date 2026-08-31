@@ -6,6 +6,7 @@ import 'package:e_commerce/features/auth/cubit/cubit/auth_cubit.dart';
 import 'package:e_commerce/features/auth/loginScreen/login_screen.dart';
 import 'package:e_commerce/features/auth/registerScreen/register_screen.dart';
 import 'package:e_commerce/features/cart/cart_screen.dart';
+import 'package:e_commerce/features/cart/cubit/cart_cubit.dart';
 import 'package:e_commerce/features/home_screen/models/products_model.dart';
 import 'package:e_commerce/features/main_screen/main_screen.dart';
 import 'package:e_commerce/features/product_screen/product_screen.dart';
@@ -31,34 +32,49 @@ class RouterGeneration {
           child: const LoginScreen(),
         ),
       ),
+
       GoRoute(
         path: AppRoutes.registerScreen,
         name: AppRoutes.registerScreen,
         builder: (context, state) => const RegisterScreen(),
       ),
+
       GoRoute(
         path: AppRoutes.mainscreen,
         name: AppRoutes.mainscreen,
         builder: (context, state) => const MainScreen(),
       ),
+
       GoRoute(
         path: AppRoutes.productScreen,
         name: AppRoutes.productScreen,
         builder: (context, state) {
-          ProductsModel product = state.extra as ProductsModel;
-          return ProductScreen(product: product);
+          final ProductsModel product = state.extra as ProductsModel;
+
+          return BlocProvider.value(
+            value: sl<CartCubit>(),
+            child: ProductScreen(product: product),
+          );
         },
       ),
+
       GoRoute(
         path: AppRoutes.cartScreen,
         name: AppRoutes.cartScreen,
-        builder: (context, state) => const CartScreen(),
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<CartCubit>(),
+            child: const CartScreen(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.accountScreen,
         name: AppRoutes.accountScreen,
         builder: (context, state) => const AccountScreen(),
       ),
+
       GoRoute(
         path: AppRoutes.addressScreen,
         name: AppRoutes.addressScreen,
