@@ -1,6 +1,7 @@
 import 'package:e_commerce/core/styling/app_colors.dart';
 import 'package:e_commerce/core/utils/service_locator.dart';
 import 'package:e_commerce/features/account/account_screen.dart';
+import 'package:e_commerce/features/auth/cubit/cubit/auth_cubit.dart';
 import 'package:e_commerce/features/cart/cart_screen.dart';
 import 'package:e_commerce/features/cart/cubit/cart_cubit.dart';
 import 'package:e_commerce/features/home_screen/cubit/categories_cubit.dart';
@@ -21,27 +22,23 @@ class MainScreen extends StatefulWidget {
 class _HomeScreenState extends State<MainScreen> {
   int currentIndex = 0;
 
-  final List<Widget> pages = const [
+  final List<Widget> pages =  [
     HomeScreen(),
     CartScreen(),
-    AccountScreen(),
+    BlocProvider(
+      create: (context) => sl<AuthCubit>(),
+       child: AccountScreen()),
   ];
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => sl<ProductCubit>(),
-        ),
+        BlocProvider(create: (context) => sl<ProductCubit>()),
 
-        BlocProvider(
-          create: (context) => sl<CategoriesCubit>(),
-        ),
+        BlocProvider(create: (context) => sl<CategoriesCubit>()),
 
-        BlocProvider.value(
-          value: sl<CartCubit>(),
-        ),
+        BlocProvider.value(value: sl<CartCubit>()),
       ],
       child: Scaffold(
         body: pages[currentIndex],
@@ -67,23 +64,17 @@ class _HomeScreenState extends State<MainScreen> {
 
             activeColor: AppColors.primaryColor,
 
-            tabBackgroundColor:
-                AppColors.primaryColor.withValues(alpha: 0.1),
+            tabBackgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
 
             gap: 8.w,
 
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 12.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
 
             duration: const Duration(milliseconds: 300),
 
             tabs: [
               GButton(
-                icon: currentIndex == 0
-                    ? Icons.home
-                    : Icons.home_outlined,
+                icon: currentIndex == 0 ? Icons.home : Icons.home_outlined,
                 text: 'Home',
                 iconSize: 24.sp,
               ),
