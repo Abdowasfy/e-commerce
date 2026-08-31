@@ -127,7 +127,7 @@ flutter run
 
 ## 📸 Screenshots
 
-> Add your application screenshots here.
+![alt text](image.png)
 
 ```text
 screenshots/
