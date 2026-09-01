@@ -32,11 +32,11 @@ void setupServiceLocator() {
   sl.registerFactory(
     () => AuthCubit(sl<AuthRepo>()),
   );
-
+   // Categories Cubit
   sl.registerFactory(
     () => CategoriesCubit(sl<HomeRepo>()),
   );
-
+   // Product Cubit
   sl.registerFactory(
     () => ProductCubit(sl<HomeRepo>()),
   );

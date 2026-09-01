@@ -45,7 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
           SizedBox(
             width: 335.w,
-            child: Text("Nexora", style: AppStyles.black18boldStyle),
+            child: Text(
+              "Nexora",
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
           ),
 
           const Gap(16),

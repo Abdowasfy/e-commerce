@@ -11,7 +11,7 @@ class AddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Address'),
+        title: const Text('Address', style: TextStyle(fontSize: 25)),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),

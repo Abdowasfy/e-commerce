@@ -1,7 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageHelper {
-
   final storage = const FlutterSecureStorage();
 
   Future<void> saveToken(String token) async {
@@ -15,7 +14,4 @@ class StorageHelper {
   Future<void> removeToken() async {
     await storage.delete(key: 'token');
   }
-
-  
-
 }

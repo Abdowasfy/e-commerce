@@ -1,7 +1,6 @@
 import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_assets.dart';
 import 'package:e_commerce/core/styling/app_styles.dart';
-import 'package:e_commerce/core/utils/service_locator.dart';
 import 'package:e_commerce/core/widgets/primary_button_widget.dart';
 import 'package:e_commerce/features/account/widgets/account_item_widgets.dart';
 import 'package:e_commerce/features/auth/cubit/cubit/auth_cubit.dart';
@@ -20,7 +19,7 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Account"),
+        title: const Text("Account", style: TextStyle(fontSize: 25)),
         centerTitle: true,
         leading: Container(),
       ),

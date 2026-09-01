@@ -17,7 +17,7 @@ class ProductScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Details"),
+        title: const Text("Details", style: TextStyle(fontSize: 24)),
         centerTitle: true,
       ),
       body: Stack(
@@ -43,7 +43,7 @@ class ProductScreen extends StatelessWidget {
                   const Gap(12),
                   Text(
                     product.title,
-                    style: AppStyles.black16w500style.copyWith(fontSize: 24.sp),
+                    style: AppStyles.black16w500style.copyWith(fontSize: 21.sp),
                   ),
                   const Gap(8),
                   Text(
@@ -55,7 +55,7 @@ class ProductScreen extends StatelessWidget {
                   const Gap(4),
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.amber, size: 18.sp),
+                      Icon(Icons.star, color: Colors.orange, size: 18.sp),
                       const Gap(4),
 
                       const Gap(4),

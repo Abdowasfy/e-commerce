@@ -16,7 +16,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("My Cart"),
+        title: const Text("My Cart", style: TextStyle(fontSize: 24)),
         centerTitle: true,
         leading: Container(),
       ),
@@ -24,10 +24,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, cartItems) {
           if (cartItems.isEmpty) {
             return const Center(
-              child: Text(
-                "Your cart is empty",
-                style: TextStyle(fontSize: 18),
-              ),
+              child: Text("Your cart is empty", style: TextStyle(fontSize: 18)),
             );
           }
 
@@ -40,26 +37,18 @@ class CartScreen extends StatelessWidget {
                 children: [
                   const Gap(14),
 
-                  ...cartItems.map(
-                    (item) => CartItemWidget(
-                      cartItem: item,
-                    ),
-                  ),
+                  ...cartItems.map((item) => CartItemWidget(cartItem: item)),
 
                   const Gap(70),
 
                   TotalPriceWidget(
                     title: "Sub-total",
-                    price:
-                        "\$ ${cartCubit.totalPrice.toStringAsFixed(2)}",
+                    price: "\$ ${cartCubit.totalPrice.toStringAsFixed(2)}",
                   ),
 
                   const Gap(16),
 
-                  const TotalPriceWidget(
-                    title: "VAT (%)",
-                    price: "\$ 0.00",
-                  ),
+                  const TotalPriceWidget(title: "VAT (%)", price: "\$ 0.00"),
 
                   const Gap(16),
 
