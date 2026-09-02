@@ -1,6 +1,5 @@
 import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_colors.dart';
-import 'package:e_commerce/core/styling/app_styles.dart';
 import 'package:e_commerce/core/widgets/custom_text_field.dart';
 import 'package:e_commerce/features/home_screen/cubit/categories_cubit.dart';
 import 'package:e_commerce/features/home_screen/cubit/categories_state.dart';

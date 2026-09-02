@@ -1,5 +1,6 @@
 import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/styling/app_assets.dart';
+import 'package:e_commerce/core/styling/app_colors.dart';
 import 'package:e_commerce/core/styling/app_styles.dart';
 import 'package:e_commerce/core/widgets/primary_button_widget.dart';
 import 'package:e_commerce/features/account/widgets/account_item_widgets.dart';
@@ -111,6 +112,7 @@ class AccountScreen extends StatelessWidget {
       context: parentContext,
       builder: (context) {
         return Dialog(
+          backgroundColor: AppColors.whiteColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),
           ),
